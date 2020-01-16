@@ -94,81 +94,81 @@ RTU.rare_ids_set = Set(RTU.rare_ids)
 -- Group rares by the assaults they are active in.
 -- Notes: used the values found in the HandyNotes_VisionsOfNZoth addon.
 RTU.assault_rare_ids = {
-    [3165083] = { -- West (AQR)
-        [155703] = true,
-        [154578] = true,
-        [154576] = true,
-        [162172] = true,
-        [162370] = true,
-        [162171] = true,
-        [162147] = true,
-        [162163] = true,
-        [155531] = true,
-        [157134] = true,
-        [154604] = true,
-        [156078] = true,
-        [162196] = true,
-        [162142] = true,
-        [156299] = true,
-        [162173] = true,
-        [160532] = true,
-        [162140] = true,
-        [162372] = true,
-        [162352] = true,
-        [151878] = true,
-        [162170] = true,
-    },
-    [3165092] = { -- South (EMP)
-        [158557] = true,
-        [155703] = true,
-        [154578] = true,
-        [154576] = true,
-        [162172] = true,
-        [158594] = true,
-        [158491] = true,
-        [158633] = true,
-        [158597] = true,
-        [158528] = true,
-        [160623] = true,
-        [155531] = true,
-        [157134] = true,
-        [156655] = true,
-        [162196] = true,
-        [156299] = true,
-        [161033] = true,
-        [156654] = true,
-        [160532] = true,
-        [151878] = true,
-        [158636] = true,
-    },
-    [3165098] = { -- East (AMA)
-        [157170] = true,
-        [151883] = true,
-        [155703] = true,
-        [154578] = true,
-        [154576] = true,
-        [162172] = true,
-        [152757] = true,
-        [157120] = true,
-        [151995] = true,
-        [155531] = true,
-        [157134] = true,
-        [157157] = true,
-        [152677] = true,
-        [162196] = true,
-        [157146] = true,
-        [152040] = true,
-        [151948] = true,
-        [162372] = true,
-        [162352] = true,
-        [151878] = true,
-        [151897] = true,
-        [151609] = true,
-        [152657] = true,
-        [151852] = true,
-        [157164] = true,
-        [162141] = true,
-    }
+    [3165083] = Set({ -- West (AQR)
+        155703,
+        154578,
+        154576,
+        162172,
+        162370,
+        162171,
+        162147,
+        162163,
+        155531,
+        157134,
+        154604,
+        156078,
+        162196,
+        162142,
+        156299,
+        162173,
+        160532,
+        162140,
+        162372,
+        162352,
+        151878,
+        162170,
+    }),
+    [3165092] = Set({ -- South (EMP)
+        158557,
+        155703,
+        154578,
+        154576,
+        162172,
+        158594,
+        158491,
+        158633,
+        158597,
+        158528,
+        160623,
+        155531,
+        157134,
+        156655,
+        162196,
+        156299,
+        161033,
+        156654,
+        160532,
+        151878,
+        158636,
+    }),
+    [3165098] = Set({ -- East (AMA)
+        157170,
+        151883,
+        155703,
+        154578,
+        154576,
+        162172,
+        152757,
+        157120,
+        151995,
+        155531,
+        157134,
+        157157,
+        152677,
+        162196,
+        157146,
+        152040,
+        151948,
+        162372,
+        162352,
+        151878,
+        151897,
+        151609,
+        152657,
+        151852,
+        157164,
+        162141,
+    })
 }
 
 -- Get the rare names in the correct localization.
@@ -371,58 +371,55 @@ for key, value in pairs(yell_announcing_rares) do
     RTU.yell_announcing_rares[RTU.rare_names[key]] = value
 end
 
--- Link drill codes to their respective entities.
-RTU.drill_announcing_rares = {}
-
 -- A set of placeholder icons, which will be used if the rare location is not yet known.
 RTU.rare_coordinates = {
     -- [157170] = {["x"] = -1, ["y"] = -1}, -- "Acolyte Taspu"
-    -- [158557] = {["x"] = -1, ["y"] = -1}, -- "Actiss the Deceiver"
-    -- [151883] = {["x"] = -1, ["y"] = -1}, -- "Anaua"
-    -- [155703] = {["x"] = -1, ["y"] = -1}, -- "Anq'uri the Titanic"
-    -- [154578] = {["x"] = -1, ["y"] = -1}, -- "Aqir Flayer"
-    -- [154576] = {["x"] = -1, ["y"] = -1}, -- "Aqir Titanus"
-    -- [162172] = {["x"] = -1, ["y"] = -1}, -- "Aqir Warcaster"
-    -- [162370] = {["x"] = -1, ["y"] = -1}, -- "Armagedillo"
-    -- [152757] = {["x"] = -1, ["y"] = -1}, -- "Atekhramun"
-    -- [162171] = {["x"] = -1, ["y"] = -1}, -- "Captain Dunewalker"
-    -- [162147] = {["x"] = -1, ["y"] = -1}, -- "Corpse Eater"
-    -- [158594] = {["x"] = -1, ["y"] = -1}, -- "Doomsayer Vathiris"
-    -- [158491] = {["x"] = -1, ["y"] = -1}, -- "Falconer Amenophis"
-    -- [157120] = {["x"] = -1, ["y"] = -1}, -- "Fangtaker Orsa"
-    -- [158633] = {["x"] = -1, ["y"] = -1}, -- "Gaze of N'Zoth"
-    -- [158597] = {["x"] = -1, ["y"] = -1}, -- "High Executor Yothrim"
-    -- [158528] = {["x"] = -1, ["y"] = -1}, -- "High Guard Reshef"
-    -- [162163] = {["x"] = -1, ["y"] = -1}, -- "High Priest Ytaessis"
-    -- [151995] = {["x"] = -1, ["y"] = -1}, -- "Hik-Ten the Taskmaster"
-    -- [160623] = {["x"] = -1, ["y"] = -1}, -- "Hungering Miasma"
-    -- [155531] = {["x"] = -1, ["y"] = -1}, -- "Infested Wastewander Captain"
-    -- [157134] = {["x"] = -1, ["y"] = -1}, -- "Ishak of the Four Winds"
-    -- [156655] = {["x"] = -1, ["y"] = -1}, -- "Korzaran the Slaughterer"
-    -- [154604] = {["x"] = -1, ["y"] = -1}, -- "Lord Aj'qirai"
-    -- [156078] = {["x"] = -1, ["y"] = -1}, -- "Magus Rehleth"
-    -- [157157] = {["x"] = -1, ["y"] = -1}, -- "Muminah the Incandescent"
-    -- [152677] = {["x"] = -1, ["y"] = -1}, -- "Nebet the Ascended"
-    -- [162196] = {["x"] = -1, ["y"] = -1}, -- "Obsidian Annihilator"
-    -- [162142] = {["x"] = -1, ["y"] = -1}, -- "Qho"
-    -- [156299] = {["x"] = -1, ["y"] = -1}, -- "R'khuzj the Unfathomable"
-    -- [162173] = {["x"] = -1, ["y"] = -1}, -- "R'krox the Runt"
-    -- [157146] = {["x"] = -1, ["y"] = -1}, -- "Rotfeaster"
-    -- [152040] = {["x"] = -1, ["y"] = -1}, -- "Scoutmaster Moswen"
-    -- [151948] = {["x"] = -1, ["y"] = -1}, -- "Senbu the Pridefather"
-    -- [161033] = {["x"] = -1, ["y"] = -1}, -- "Shadowmaw"
-    -- [156654] = {["x"] = -1, ["y"] = -1}, -- "Shol'thoss the Doomspeaker"
-    -- [160532] = {["x"] = -1, ["y"] = -1}, -- "Shoth the Darkened"
-    -- [162140] = {["x"] = -1, ["y"] = -1}, -- "Skikx'traz"
-    -- [162372] = {["x"] = -1, ["y"] = -1}, -- "Spirit of Cyrus the Black"
-    -- [162352] = {["x"] = -1, ["y"] = -1}, -- "Spirit of Dark Ritualist Zakahn"
-    -- [151878] = {["x"] = -1, ["y"] = -1}, -- "Sun King Nahkotep"
-    -- [151897] = {["x"] = -1, ["y"] = -1}, -- "Sun Priestess Nubitt"
-    -- [151609] = {["x"] = -1, ["y"] = -1}, -- "Sun Prophet Epaphos"
-    -- [152657] = {["x"] = -1, ["y"] = -1}, -- "Tat the Bonechewer"
-    -- [158636] = {["x"] = -1, ["y"] = -1}, -- "The Grand Executor"
-    -- [162170] = {["x"] = -1, ["y"] = -1}, -- "Warcaster Xeshro"
-    -- [151852] = {["x"] = -1, ["y"] = -1}, -- "Watcher Rehu"
-    -- [157164] = {["x"] = -1, ["y"] = -1}, -- "Zealot Tekem"
-    -- [162141] = {["x"] = -1, ["y"] = -1}, -- "Zuythiz"
+    -- [158557] = -- "Actiss the Deceiver"
+    -- [151883] = -- "Anaua"
+    -- [155703] = -- "Anq'uri the Titanic"
+    -- [154578] = -- "Aqir Flayer"
+    -- [154576] = -- "Aqir Titanus"
+    -- [162172] = -- "Aqir Warcaster"
+    -- [162370] = -- "Armagedillo"
+    -- [152757] = -- "Atekhramun"
+    -- [162171] = -- "Captain Dunewalker"
+    -- [162147] = -- "Corpse Eater"
+    -- [158594] = -- "Doomsayer Vathiris"
+    -- [158491] = -- "Falconer Amenophis"
+    -- [157120] = -- "Fangtaker Orsa"
+    -- [158633] = -- "Gaze of N'Zoth"
+    -- [158597] = -- "High Executor Yothrim"
+    -- [158528] = -- "High Guard Reshef"
+    -- [162163] = -- "High Priest Ytaessis"
+    -- [151995] = -- "Hik-Ten the Taskmaster"
+    -- [160623] = -- "Hungering Miasma"
+    -- [155531] = -- "Infested Wastewander Captain"
+    -- [157134] = -- "Ishak of the Four Winds"
+    -- [156655] = -- "Korzaran the Slaughterer"
+    -- [154604] = -- "Lord Aj'qirai"
+    -- [156078] = -- "Magus Rehleth"
+    -- [157157] = -- "Muminah the Incandescent"
+    -- [152677] = -- "Nebet the Ascended"
+    -- [162196] = -- "Obsidian Annihilator"
+    -- [162142] = -- "Qho"
+    -- [156299] = -- "R'khuzj the Unfathomable"
+    -- [162173] = -- "R'krox the Runt"
+    -- [157146] = -- "Rotfeaster"
+    -- [152040] = -- "Scoutmaster Moswen"
+    -- [151948] = -- "Senbu the Pridefather"
+    -- [161033] = -- "Shadowmaw"
+    -- [156654] = -- "Shol'thoss the Doomspeaker"
+    -- [160532] = -- "Shoth the Darkened"
+    -- [162140] = -- "Skikx'traz"
+    -- [162372] = -- "Spirit of Cyrus the Black"
+    -- [162352] = -- "Spirit of Dark Ritualist Zakahn"
+    -- [151878] = -- "Sun King Nahkotep"
+    -- [151897] = -- "Sun Priestess Nubitt"
+    -- [151609] = -- "Sun Prophet Epaphos"
+    -- [152657] = -- "Tat the Bonechewer"
+    -- [158636] = -- "The Grand Executor"
+    -- [162170] = -- "Warcaster Xeshro"
+    -- [151852] = -- "Watcher Rehu"
+    -- [157164] = -- "Zealot Tekem"
+    -- [162141] = -- "Zuythiz"
 }

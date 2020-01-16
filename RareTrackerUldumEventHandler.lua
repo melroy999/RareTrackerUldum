@@ -1,7 +1,6 @@
 -- Redefine often used functions locally.
 local UnitGUID = UnitGUID
 local strsplit = strsplit
-local UnitBuff = UnitBuff
 local UnitHealth = UnitHealth
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local C_VignetteInfo = C_VignetteInfo
