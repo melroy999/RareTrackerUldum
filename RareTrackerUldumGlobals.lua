@@ -47,6 +47,7 @@ RTU.rare_ids = {
     162370, -- "Armagedillo",
     152757, -- "Atekhramun",
     162171, -- "Captain Dunewalker",
+    157167, -- "Champion Sen-mat",
     162147, -- "Corpse Eater",
     158594, -- "Doomsayer Vathiris",
     158491, -- "Falconer Amenophis",
@@ -168,6 +169,7 @@ RTU.assault_rare_ids = {
         151852,
         157164,
         162141,
+        157167,
     })
 }
 
@@ -187,6 +189,7 @@ RTU.rare_names = {
     [162370] = "Armagedillo",
     [152757] = "Atekhramun",
     [162171] = "Captain Dunewalker",
+    [157167] = "Champion Sen-mat",
     [162147] = "Corpse Eater",
     [158594] = "Doomsayer Vathiris",
     [158491] = "Falconer Amenophis",
@@ -267,6 +270,7 @@ RTU.completion_quest_ids = {
     [162370] = 58718, -- "Armagedillo"
     [152757] = 55710, -- "Atekhramun"
     [162171] = 58699, -- "Captain Dunewalker"
+    [157167] = 57280, -- "Champion Sen-mat"
     [162147] = 58696, -- "Corpse Eater"
     [158594] = 57672, -- "Doomsayer Vathiris"
     [158491] = 57662, -- "Falconer Amenophis"
@@ -310,7 +314,6 @@ RTU.completion_quest_ids = {
 }
 
 RTU.completion_quest_inverse = {
-    --[55512] = {151934},
     [57281] = {157170}, -- "Acolyte Taspu"
     [57669] = {158557}, -- "Actiss the Deceiver"
     [55468] = {151883}, -- "Anaua"
@@ -321,6 +324,7 @@ RTU.completion_quest_inverse = {
     [58718] = {162370}, -- "Armagedillo"
     [55710] = {152757}, -- "Atekhramun"
     [58699] = {162171}, -- "Captain Dunewalker"
+    [57280] = {157167}, -- "Champion Sen-mat"
     [58696] = {162147}, -- "Corpse Eater"
     [57672] = {158594}, -- "Doomsayer Vathiris"
     [57662] = {158491}, -- "Falconer Amenophis"

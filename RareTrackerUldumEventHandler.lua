@@ -420,12 +420,14 @@ function RTU:OnAddonLoaded()
 			RTUDB.ignore_rare = {}
 		end
 		
-		if not RTUDB.rare_ordering then
+		if not RTUDB.rare_ordering or not RTUDB.version or RTUDB.version ~= RTU.version then
+            print("Resetting ordering")
 			RTUDB.rare_ordering = LinkedSet:New()
 			for i=1, #self.rare_ids do
 				local npc_id = self.rare_ids[i]
 				RTUDB.rare_ordering:AddBack(npc_id)
 			end
+            RTUDB.version = RTU.version
 		else
 			RTUDB.rare_ordering = LinkedSet:New(RTUDB.rare_ordering)
 		end
