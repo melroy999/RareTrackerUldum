@@ -432,7 +432,9 @@ rare_display_name_overwrites["frFR"] = {}
 rare_display_name_overwrites["zhCN"] = {}
 rare_display_name_overwrites["zhTW"] = {}
 rare_display_name_overwrites["koKR"] = {}
-rare_display_name_overwrites["deDE"] = {}
+rare_display_name_overwrites["deDE"] = {
+    [155531] = "Hauptmann der Wüstenwanderer"
+}
 rare_display_name_overwrites["esES"] = {}
 rare_display_name_overwrites["esMX"] = rare_display_name_overwrites["esES"]
 rare_display_name_overwrites["ptPT"] = {}
