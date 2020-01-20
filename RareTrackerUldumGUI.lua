@@ -211,13 +211,13 @@ end
 function RTU:ReorganizeRareTableFrame(f)
     -- Filter out the rares that are not part of the current assault.
     local assault_rares = self.rare_ids_set
-    -- if self.assault_id == 0 then
-    --     if RTUDB.default_show_loot_rares_only then
-    --         assault_rares = self.rare_ids_with_loot
-    --     end
-    -- else
-    --     assault_rares = self.assault_rare_ids[self.assault_id]
-    -- end
+    if self.assault_id == 0 then
+        if RTUDB.default_show_loot_rares_only then
+            assault_rares = self.rare_ids_with_loot
+        end
+    else
+        assault_rares = self.assault_rare_ids[self.assault_id]
+    end
     
 	-- How many ignored rares do we have?
 	local n = 0
