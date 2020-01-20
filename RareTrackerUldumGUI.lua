@@ -455,7 +455,7 @@ end
 function RTU:InitializeReloadButton(f)
 	f.reload_button = CreateFrame("Button", "RTU.reload_button", f)
 	f.reload_button:SetSize(10, 10)
-	f.reload_button:SetPoint("TOPRIGHT", f, -2 * frame_padding, -(frame_padding + 3))
+	f.reload_button:SetPoint("TOPRIGHT", f, -3 * frame_padding - favorite_rares_width, -(frame_padding + 3))
 
 	f.reload_button.texture = f.reload_button:CreateTexture(nil, "OVERLAY")
 	f.reload_button.texture:SetTexture("Interface\\AddOns\\RareTrackerUldum\\Icons\\Reload.tga")
@@ -528,6 +528,23 @@ function RTU:InitializeReloadButton(f)
 	);
 end
 
+function RTU:InitializeCloseButton(f)
+	f.close_button = CreateFrame("Button", "RTU.close_button", f)
+	f.close_button:SetSize(10, 10)
+	f.close_button:SetPoint("TOPRIGHT", f, -2 * frame_padding, -(frame_padding + 3))
+
+	f.close_button.texture = f.close_button:CreateTexture(nil, "OVERLAY")
+	f.close_button.texture:SetTexture("Interface\\AddOns\\RareTrackerUldum\\Icons\\Cross.tga")
+	f.close_button.texture:SetSize(10, 10)
+	f.close_button.texture:SetPoint("CENTER", f.close_button)
+	
+	f.close_button:SetScript("OnClick",
+		function()
+            self:Hide()
+            RTUDB.show_window = false
+		end
+	);
+end
 
 function RTU:InitializeInterface()
 	self:SetSize(
@@ -558,6 +575,7 @@ function RTU:InitializeInterface()
 	
 	-- Create a reset button.
 	self:InitializeReloadButton(self)
+    self:InitializeCloseButton(self)
 	self:SetClampedToScreen(true)
 	
 	self:Hide()
