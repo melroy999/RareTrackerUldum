@@ -431,6 +431,10 @@ function RTU:OnAddonLoaded()
 		else
 			RTUDB.rare_ordering = LinkedSet:New(RTUDB.rare_ordering)
 		end
+        
+        if not RTUDB.default_show_loot_rares_only then
+			RTUDB.default_show_loot_rares_only = true
+		end
 		
 		-- Initialize the frame.
 		self:InitializeInterface()

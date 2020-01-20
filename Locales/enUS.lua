@@ -45,3 +45,4 @@ L["<RTU> Restoring data from previous session in shard "] = "<RTU> Restoring dat
 L["<RTU> Requesting rare kill data for shard "] = "<RTU> Requesting rare kill data for shard "
 L["<RTU> Your version or RareTrackerUldum is outdated. Please update to the most recent version at the earliest convenience."] = "<RTU> Your version or RareTrackerUldum is outdated. Please update to the most recent version at the earliest convenience."
 L["<RTU> Failed to register AddonPrefix 'RTU'. RTU will not function properly."] = "<RTU> Failed to register AddonPrefix 'RTU'. RTU will not function properly."
+L[" Show only loot rares when no assault data is available"] = " Show only loot rares when no assault data is available"

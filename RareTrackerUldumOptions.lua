@@ -129,7 +129,6 @@ end
 function RTU.IntializeDebugCheckbox(parent_frame)
 	local f = CreateFrame("CheckButton", "RTU.options_panel.debug_checkbox", parent_frame, "ChatConfigCheckButtonTemplate")
 	getglobal(f:GetName() .. 'Text'):SetText(L[" Enable debug mode"]);
-	f.tooltip = L["Show or hide the minimap button."];
 	f:SetScript("OnClick",
 		function()
 			RTUDB.debug_enabled = not RTUDB.debug_enabled
@@ -137,6 +136,19 @@ function RTU.IntializeDebugCheckbox(parent_frame)
 	);
 	f:SetChecked(RTUDB.debug_enabled)
 	f:SetPoint("TOPLEFT", parent_frame, 0, -97)
+end
+
+function RTU:IntializeDefaultModeCheckbox(parent_frame)
+	local f = CreateFrame("CheckButton", "RTU.options_panel.default_mode_checkbox", parent_frame, "ChatConfigCheckButtonTemplate")
+	getglobal(f:GetName() .. 'Text'):SetText(L[" Show only loot rares when no assault data is available"]);
+	f:SetScript("OnClick",
+		function()
+			RTUDB.default_show_loot_rares_only = not RTUDB.default_show_loot_rares_only
+            self:ReorganizeRareTableFrame(self.entities_frame)
+		end
+	);
+	f:SetChecked(RTUDB.default_show_loot_rares_only)
+	f:SetPoint("TOPLEFT", parent_frame, 0, -119)
 end
 
 function RTU:IntializeScaleSlider(parent_frame)
@@ -162,7 +174,7 @@ function RTU:IntializeScaleSlider(parent_frame)
 	f.label = f:CreateFontString(nil, "BORDER", "GameFontNormal")
 	f.label:SetJustifyH("LEFT")
 	f.label:SetText(L["Rare window scale "]..string.format("(%.2f)", RTUDB.window_scale))
-	f.label:SetPoint("TOPLEFT", parent_frame, 0, -125)
+	f.label:SetPoint("TOPLEFT", parent_frame, 0, -147)
 	
 	f:SetPoint("TOPLEFT", f.label, 5, -15)
 end
@@ -174,7 +186,7 @@ function RTU:InitializeButtons(parent_frame)
 	
 	parent_frame.reset_favorites_button:SetText(L["Reset Favorites"])
 	parent_frame.reset_favorites_button:SetSize(150, 25)
-	parent_frame.reset_favorites_button:SetPoint("TOPLEFT", parent_frame, 0, -175)
+	parent_frame.reset_favorites_button:SetPoint("TOPLEFT", parent_frame, 0, -197)
 	parent_frame.reset_favorites_button:SetScript("OnClick",
 		function()
 			RTUDB.favorite_rares = {}
@@ -420,6 +432,7 @@ function RTU:InitializeConfigMenu()
 	self.options_panel.minimap_checkbox = self:IntializeMinimapCheckbox(self.options_panel.frame)
 	self.options_panel.raid_comms_checkbox = self.IntializeRaidCommunicationCheckbox(self.options_panel.frame)
 	self.options_panel.debug_checkbox = self.IntializeDebugCheckbox(self.options_panel.frame)
+    self.options_panel.default_mode_checkbox = self:IntializeDefaultModeCheckbox(self.options_panel.frame)
 	self.options_panel.scale_slider = self:IntializeScaleSlider(self.options_panel.frame)
 	self:InitializeButtons(self.options_panel.frame)
 	self:InitializeRareSelectionChildMenu(self.options_panel)

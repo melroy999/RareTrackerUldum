@@ -218,6 +218,19 @@ RTU.assault_rare_ids = {
     })
 }
 
+-- Rare ids that have loot, which will be used as a default fallback option if no assault is active (introduction not done).
+RTU.rare_ids_with_loot = Set({
+    157593, -- "Amalgamation of Flesh"
+    162147, -- "Malevolent Drone"
+    158633, -- "Gaze of N'Zoth"
+    157134, -- "Ishak of the Four Winds"
+    154604, -- "Lord Aj'qirai"
+    157146, -- "Rotfeaster"
+    162140, -- "Skikx'traz"
+    158636, -- "The Grand Executor"
+    157473, -- "Yiphrim the Will Ravager"
+})
+
 -- Get the rare names in the correct localization.
 RTU.localization = GetLocale()
 RTU.rare_names = {}

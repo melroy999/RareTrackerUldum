@@ -47,3 +47,4 @@ L["<RTU> Restoring data from previous session in shard "] = "<RTU> 恢复上一�
 L["<RTU> Requesting rare kill data for shard "] = "<RTU> 从分片请求稀有的击杀数据 "
 L["<RTU> Your version or RareTrackerUldum is outdated. Please update to the most recent version at the earliest convenience."] = "<RTU> 您的版本或RareTrackerUldum已过时. 请尽快更新到最新版本."
 L["<RTU> Failed to register AddonPrefix 'RTU'. RTU will not function properly."] = "<RTU> 无法注册插件前缀 'RTU'. RTU无法正常运行."
+L[" Show only loot rares when no assault data is available"] = " Show only loot rares when no assault data is available"
