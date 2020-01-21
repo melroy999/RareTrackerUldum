@@ -99,8 +99,16 @@ function RTU:IntializeMinimapCheckbox(parent_frame)
 			RTUDB.minimap_icon_enabled = not RTUDB.minimap_icon_enabled
 			if not RTUDB.minimap_icon_enabled then
 				self.icon:Hide("RTU_icon")
+                if Bazooka then
+                    Bazooka:disablePlugin(Bazooka.plugins["RTU"])
+                end
 			elseif RTU.target_zones[C_Map.GetBestMapForUnit("player")] then
 				self.icon:Show("RTU_icon")
+                if Bazooka then
+                    local plugin = Bazooka.plugins["RTU"]
+                    plugin.db.enabled = true
+                    plugin:applySettings()
+                end
 			end
 		end
 	);

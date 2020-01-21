@@ -373,7 +373,6 @@ end
 function RTU:OnAddonLoaded()
 	-- OnAddonLoaded might be called multiple times. We only want it to do so once.
 	if not self.is_loaded then
-		
 		if RTUDB.show_window == nil then
 			RTUDB.show_window = true
 		end

@@ -118,8 +118,16 @@ function RTU:StartInterface()
 	
 	if RTUDB.minimap_icon_enabled then
 		self.icon:Show("RTU_icon")
+        if Bazooka then
+            local plugin = Bazooka.plugins["RTU"]
+            plugin.db.enabled = true
+            plugin:applySettings()
+        end
 	else
 		self.icon:Hide("RTU_icon")
+        if Bazooka then
+            Bazooka:disablePlugin(Bazooka.plugins["RTU"])
+        end
 	end
 	
 	if C_ChatInfo.RegisterAddonMessagePrefix("RTU") ~= true then
@@ -147,6 +155,9 @@ function RTU:CloseInterface()
 	self:RegisterDeparture(self.current_shard_id)
 	self:UnregisterEvents()
 	self.icon:Hide("RTU_icon")
+    if Bazooka then
+        Bazooka:disablePlugin(Bazooka.plugins["RTU"])
+    end
 	
 	-- Hide the interface.
 	self:Hide()
@@ -156,7 +167,7 @@ end
 -- ##                          Minimap Icon                          ##
 -- ####################################################################
 
-local RTU_LDB = LibStub("LibDataBroker-1.1"):NewDataObject("RTU_icon_object", {
+local RTU_LDB = LibStub("LibDataBroker-1.1"):NewDataObject("RTU", {
 	type = "data source",
 	text = "RTU",
 	icon = "Interface\\AddOns\\RareTrackerUldum\\Icons\\RareTrackerIcon",
