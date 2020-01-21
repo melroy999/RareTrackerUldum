@@ -2,7 +2,7 @@
 ## Title: RareTrackerUldum
 ## Notes: Track and coordinate rare spawn timers in Uldum.
 ## Author: Melroy
-## Version: 5.3.0
+## Version: 5.3.1
 ##SavedVariables: RTUDB, RTU_ace_db
 
 libs\LibDBIcon-1.0\LibStub\LibStub.lua
