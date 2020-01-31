@@ -130,6 +130,7 @@ RTU.assault_rare_ids = {
         162352,
         151878,
         162170,
+        162141,
         
         157472, -- "Aphrom the Guise of Madness"
         158531, -- "Corrupted Neferset Guard"
