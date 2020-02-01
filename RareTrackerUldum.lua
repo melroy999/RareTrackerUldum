@@ -22,6 +22,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 -- ####################################################################
 
 local RTU = CreateFrame("Frame", "RTU", UIParent);
+RT:RegisterZoneModule(RTU)
 
 -- The current data we have of the rares.
 RTU.is_alive = {}
@@ -50,14 +51,14 @@ RTU.version = 8
 -- Version 7: Added Champion Sen-mat.
 -- Version 8: Added more rares.
 
--- The last zone the user was in.
-RTU.last_zone_id = nil
-
 -- Check whether the addon has loaded.
 RTU.is_loaded = false
 
 -- Check which assault is currently active.
 RTU.assault_id = 0
+
+-- The code of the addon.
+RTU.addon_code = "RTU"
 
 
 -- ####################################################################
@@ -67,38 +68,12 @@ RTU.assault_id = 0
 -- Setting saved in the saved variables.
 RTUDB = {}
 
--- The rares marked as RTUDB.favorite_rares by the player.
-RTUDB.favorite_rares = {}
-
--- Remember whether the user wants to see the window or not.
-RTUDB.show_window = nil
-
 -- Keep a cache of previous data, that we can restore if appropriate.
 RTUDB.previous_records = {}
 
 -- ####################################################################
 -- ##                        Helper functions                        ##
 -- ####################################################################
-
--- Get the current health of the entity, rounded down to an integer.
-function RTU.GetTargetHealthPercentage()
-	-- Find the current and maximum health of the current target.
-	local max_hp = UnitHealthMax("target")
-	
-	-- Check for division by zero.
-	if max_hp == 0 then
-		return -1
-	end
-	
-	return math.floor((100 * UnitHealth("target")) / UnitHealthMax("target"))
-end
-
--- A print function used for debug purposes.
-function RTU.Debug(...)
-	if RTUDB.debug_enabled then
-		print(...)
-	end
-end
 
 -- Open and start the RTU interface and subscribe to all the required events.
 function RTU:StartInterface()
@@ -113,28 +88,13 @@ function RTU:StartInterface()
 	self.current_shard_id = nil
 	self:UpdateShardNumber(nil)
 	self:UpdateAllDailyKillMarks()
-	
 	self:RegisterEvents()
-	
-	if RTUDB.minimap_icon_enabled then
-		self.icon:Show("RTU_icon")
-        if Bazooka then
-            local plugin = Bazooka.plugins["RTU"]
-            plugin.db.enabled = true
-            plugin:applySettings()
-        end
-	else
-		self.icon:Hide("RTU_icon")
-        if Bazooka then
-            Bazooka:disablePlugin(Bazooka.plugins["RTU"])
-        end
-	end
 	
 	if C_ChatInfo.RegisterAddonMessagePrefix("RTU") ~= true then
 		print(L["<RTU> Failed to register AddonPrefix 'RTU'. RTU will not function properly."])
 	end
 	
-	if RTUDB.show_window then
+	if not RT.db.global.window.hide then
 		self:Show()
 	end
 end
@@ -154,59 +114,7 @@ function RTU:CloseInterface()
 	-- Register the user's departure and disable event listeners.
 	self:RegisterDeparture(self.current_shard_id)
 	self:UnregisterEvents()
-	self.icon:Hide("RTU_icon")
-    if Bazooka then
-        Bazooka:disablePlugin(Bazooka.plugins["RTU"])
-    end
 	
 	-- Hide the interface.
 	self:Hide()
 end
-
--- ####################################################################
--- ##                          Minimap Icon                          ##
--- ####################################################################
-
-local RTU_LDB = LibStub("LibDataBroker-1.1"):NewDataObject("RTU", {
-	type = "data source",
-	text = "RTU",
-	icon = "Interface\\AddOns\\RareTrackerUldum\\Icons\\RareTrackerIcon",
-	OnClick = function(_, button)
-		if button == "LeftButton" then
-			if RTU.last_zone_id and RTU.target_zones[RTU.last_zone_id] then
-				if RTU:IsShown() then
-					RTU:Hide()
-					RTUDB.show_window = false
-				else
-					RTU:Show()
-					RTUDB.show_window = true
-				end
-			end
-		else
-			InterfaceOptionsFrame_Show()
-			InterfaceOptionsFrame_OpenToCategory(RTU.options_panel)
-		end
-	end,
-	OnTooltipShow = function(tooltip)
-		tooltip:SetText("RTU")
-		tooltip:AddLine(L["Left-click: hide/show RTU"], 1, 1, 1)
-		tooltip:AddLine(L["Right-click: show options"], 1, 1, 1)
-		tooltip:Show()
-	end
-})
-
-RTU.icon = LibStub("LibDBIcon-1.0")
-RTU.icon:Hide("RTU_icon")
-
-function RTU:RegisterMapIcon()
-	self.ace_db = LibStub("AceDB-3.0"):New("RTU_ace_db", {
-		profile = {
-			minimap = {
-				hide = false,
-			},
-		},
-	})
-	RTU.icon:Register("RTU_icon", RTU_LDB, self.ace_db.profile.minimap)
-end
-
-

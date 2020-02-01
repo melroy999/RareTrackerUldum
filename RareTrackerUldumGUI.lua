@@ -72,11 +72,11 @@ function RTU:CreateRareTableEntry(npc_id, parent_frame)
 	-- Add an action listener.
 	f.favorite:SetScript("OnClick",
 		function()
-			if RTUDB.favorite_rares[npc_id] then
-				RTUDB.favorite_rares[npc_id] = nil
+			if self.db.global.favorite_rares[npc_id] then
+				self.db.global.favorite_rares[npc_id] = nil
 				f.favorite.texture:SetColorTexture(0, 0, 0, front_opacity)
 			else
-				RTUDB.favorite_rares[npc_id] = true
+				self.db.global.favorite_rares[npc_id] = true
 				f.favorite.texture:SetColorTexture(0, 1, 0, 1)
 			end
 		end
@@ -314,7 +314,7 @@ function RTU:CorrectFavoriteMarks()
 	for i=1, #self.rare_ids do
 		local npc_id = self.rare_ids[i]
 		
-		if RTUDB.favorite_rares[npc_id] then
+		if self.db.global.favorite_rares[npc_id] then
 			self.entities_frame.entities[npc_id].favorite.texture:SetColorTexture(0, 1, 0, 1)
 		else
 			self.entities_frame.entities[npc_id].favorite.texture:SetColorTexture(0, 0, 0, front_opacity)
@@ -541,7 +541,7 @@ function RTU:InitializeCloseButton(f)
 	f.close_button:SetScript("OnClick",
 		function()
             self:Hide()
-            RTUDB.show_window = false
+            RT.db.global.window.hide = true
 		end
 	);
 end

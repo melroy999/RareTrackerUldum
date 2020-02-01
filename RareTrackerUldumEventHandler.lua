@@ -32,17 +32,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 function RTU:OnEvent(event, ...)
 	if event == "PLAYER_TARGET_CHANGED" then
 		self:OnTargetChanged()
-	elseif event == "UNIT_HEALTH" and self.chat_frame_loaded then
+	elseif event == "UNIT_HEALTH" and RT.chat_frame_loaded then
 		self:OnUnitHealth(...)
-	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and self.chat_frame_loaded then
+	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and RT.chat_frame_loaded then
 		self:OnCombatLogEvent()
-	elseif event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD" or event == "ZONE_CHANGED" then
-		self:OnZoneTransition()
 	elseif event == "CHAT_MSG_ADDON" then
 		self:OnChatMsgAddon(...)
-	elseif event == "VIGNETTE_MINIMAP_UPDATED" and self.chat_frame_loaded then
+	elseif event == "VIGNETTE_MINIMAP_UPDATED" and RT.chat_frame_loaded then
 		self:OnVignetteMinimapUpdated(...)
-	elseif event == "CHAT_MSG_MONSTER_YELL" and self.chat_frame_loaded then
+	elseif event == "CHAT_MSG_MONSTER_YELL" and RT.chat_frame_loaded then
 		self:OnChatMsgMonsterYell(...)
 	elseif event == "ADDON_LOADED" then
 		self:OnAddonLoaded()
@@ -121,7 +119,7 @@ function RTU:OnTargetChanged()
 		
 		if not self.banned_NPC_ids[npc_id] and not RTUDB.banned_NPC_ids[npc_id] then
 			if self:CheckForShardChange(zone_uid) then
-				self.Debug("[Target]", guid)
+				RT:Debug("[Target]", guid)
 			end
 		end
 		
@@ -136,7 +134,7 @@ function RTU:OnTargetChanged()
 				-- Get the current position of the player and the health of the entity.
 				local pos = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player")
 				local x, y = math.floor(pos.x * 10000 + 0.5) / 100, math.floor(pos.y * 10000 + 0.5) / 100
-				local percentage = self.GetTargetHealthPercentage()
+				local percentage = RT.GetTargetHealthPercentage()
 				
 				-- Mark the entity as alive and report to your peers.
 				self:RegisterEntityTarget(self.current_shard_id, npc_id, spawn_uid, percentage, x, y)
@@ -168,7 +166,7 @@ function RTU:OnUnitHealth(unit)
 		
 		if not self.banned_NPC_ids[npc_id] and not RTUDB.banned_NPC_ids[npc_id] then
 			if self:CheckForShardChange(zone_uid) then
-				self.Debug("[OnUnitHealth]", guid)
+				RT:Debug("[OnUnitHealth]", guid)
 			end
 		end
 		
@@ -177,7 +175,7 @@ function RTU:OnUnitHealth(unit)
 		
 		if self.rare_ids_set[npc_id] then
 			-- Update the current health of the entity.
-			local percentage = self.GetTargetHealthPercentage()
+			local percentage = RT.GetTargetHealthPercentage()
 			
 			-- Does the entity have any health left?
 			if percentage > 0 then
@@ -224,7 +222,7 @@ function RTU:OnCombatLogEvent()
 		and not RTUDB.banned_NPC_ids[npc_id] and bit.band(destFlags, flag_mask) == 0 then
 		
 		if self:CheckForShardChange(zone_uid) then
-			self.Debug("[OnCombatLogEvent]", sourceGUID, destGUID)
+			RT:Debug("[OnCombatLogEvent]", sourceGUID, destGUID)
 		end
 	end
 	
@@ -262,7 +260,7 @@ function RTU:OnVignetteMinimapUpdated(vignetteGUID, _)
 		if unittype == "Creature" then
 			if not self.banned_NPC_ids[npc_id] and not RTUDB.banned_NPC_ids[npc_id] then
 				if self:CheckForShardChange(zone_uid) then
-					self.Debug("[OnVignette]", vignetteInfo.objectGUID)
+					RT:Debug("[OnVignette]", vignetteInfo.objectGUID)
 				end
 			end
 			
@@ -290,31 +288,6 @@ function RTU:OnChatMsgMonsterYell(...)
         self.current_coordinates[npc_id] = self.rare_coordinates[npc_id]
         self:PlaySoundNotification(npc_id, npc_id)
     end
-end
-
--- Called whenever an event occurs that could indicate a zone change.
-function RTU:OnZoneTransition()
-	-- The zone the player is in.
-	local zone_id = C_Map.GetBestMapForUnit("player")
-		
-	if self.target_zones[zone_id] and not self.target_zones[self.last_zone_id] then
-		self:StartInterface()
-        
-        local map_texture = C_MapExplorationInfo.GetExploredMapTextures(self.parent_zone)
-        if map_texture then
-            local new_assault_id = map_texture[1].fileDataIDs[1]
-            if self.assault_id ~= new_assault_id then
-                self.assault_id = new_assault_id
-                self:ReorganizeRareTableFrame(self.entities_frame)
-            end
-        end
-    
-	elseif not self.target_zones[zone_id] then
-		self:RegisterDeparture(self.current_shard_id)
-		self:CloseInterface()
-	end
-	
-	self.last_zone_id = zone_id
 end
 
 -- Called on every addon message received by the addon.
@@ -373,28 +346,15 @@ end
 function RTU:OnAddonLoaded()
 	-- OnAddonLoaded might be called multiple times. We only want it to do so once.
 	if not self.is_loaded then
-		if RTUDB.show_window == nil then
-			RTUDB.show_window = true
-		end
-		
-		if not RTUDB.favorite_rares then
-			RTUDB.favorite_rares = {}
-		end
+        -- Initialize the database.
+        self:InitializeRareTrackerDatabase()
 		
 		if not RTUDB.previous_records then
 			RTUDB.previous_records = {}
 		end
 		
-		if not RTUDB.selected_sound_number then
-			RTUDB.selected_sound_number = 552503
-		end
-		
 		if RTUDB.minimap_icon_enabled == nil then
 			RTUDB.minimap_icon_enabled = true
-		end
-		
-		if RTUDB.debug_enabled == nil then
-			RTUDB.debug_enabled = false
 		end
 		
 		if not RTUDB.banned_NPC_ids then
@@ -407,10 +367,6 @@ function RTU:OnAddonLoaded()
 			end
 		end
 		
-		if not RTUDB.window_scale then
-			RTUDB.window_scale = 1.0
-		end
-		
 		if RTUDB.enable_raid_communication == nil then
 			RTUDB.enable_raid_communication = true
 		end
@@ -420,7 +376,7 @@ function RTU:OnAddonLoaded()
 		end
 		
 		if not RTUDB.rare_ordering or not RTUDB.version or RTUDB.version ~= self.version then
-            self.Debug("<RTU> Resetting ordering")
+            RT:Debug("<RTU> Resetting ordering")
 			RTUDB.rare_ordering = LinkedSet:New()
 			for i=1, #self.rare_ids do
 				local npc_id = self.rare_ids[i]
@@ -442,8 +398,6 @@ function RTU:OnAddonLoaded()
 		-- Initialize the configuration menu.
 		self:InitializeConfigMenu()
 		
-		self:RegisterMapIcon()
-		
 		-- Remove any data in the previous records that has expired.
 		for key, _ in pairs(RTUDB.previous_records) do
 			if GetServerTime() - RTUDB.previous_records[key].time_stamp > 900 then
@@ -451,6 +405,8 @@ function RTU:OnAddonLoaded()
 				RTUDB.previous_records[key] = nil
 			end
 		end
+        
+        RT:NotifyZoneModuleLoaded(self)
 		
 		self.is_loaded = true
 	end
@@ -501,9 +457,6 @@ RTU:SetScript("OnEvent",
 	end
 )
 
-RTU:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-RTU:RegisterEvent("ZONE_CHANGED")
-RTU:RegisterEvent("PLAYER_ENTERING_WORLD")
 RTU:RegisterEvent("ADDON_LOADED")
 RTU:RegisterEvent("PLAYER_LOGOUT")
 
@@ -529,35 +482,9 @@ daily_reset_handling_frame:SetScript("OnUpdate",
             
             if RTU.entities_frame ~= nil then
                 RTU:UpdateAllDailyKillMarks()
-                RTU.Debug("<RTU> Updating daily kill marks.")
+                RT:Debug("<RTU> Updating daily kill marks.")
             end
 		end
 	end
 )
 daily_reset_handling_frame:Show()
-
--- ####################################################################
--- ##                       Channel Wait Frame                       ##
--- ####################################################################
-
--- One of the issues encountered is that the chat might be joined before the default channels.
--- In such a situation, the order of the channels changes, which is undesirable.
--- Thus, we block certain events until these chats have been loaded.
-RTU.chat_frame_loaded = false
-
-local message_delay_frame = CreateFrame("Frame", "RTU.message_delay_frame", UIParent)
-message_delay_frame.start_time = GetServerTime()
-message_delay_frame:SetScript("OnUpdate",
-	function(self)
-		if GetServerTime() - self.start_time > 0 then
-			if #{GetChannelList()} == 0 then
-				self.start_time = GetServerTime()
-			else
-				RTU.chat_frame_loaded = true
-				self:SetScript("OnUpdate", nil)
-				self:Hide()
-			end
-		end
-	end
-)
-message_delay_frame:Show()

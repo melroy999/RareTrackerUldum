@@ -442,7 +442,7 @@ function RTU:AcknowledgeEntityDeath(npc_id, spawn_uid)
 end
 
 function RTU:PlaySoundNotification(npc_id, spawn_uid)
-    if RTUDB.favorite_rares[npc_id] and not self.reported_spawn_uids[spawn_uid]
+    if self.db.global.favorite_rares[npc_id] and not self.reported_spawn_uids[spawn_uid]
         and not self.reported_spawn_uids[npc_id] then
             
         -- Play a sound file.
@@ -520,7 +520,7 @@ function RTU:OnChatMessageReceived(player, prefix, shard_id, addon_version, payl
 		reported_version_mismatch = true
 	end
 	
-	self.Debug(player, prefix, shard_id, addon_version, payload)
+	RT:Debug(player, prefix, shard_id, addon_version, payload)
 	
 	-- Only allow communication if the users are on the same shards and if their addon version is equal.
 	if self.current_shard_id == shard_id and self.version == addon_version then
