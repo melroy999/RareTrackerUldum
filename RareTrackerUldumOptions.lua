@@ -24,15 +24,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 -- ####################################################################
 
 function RTU:InitializeRareTrackerDatabase()
-    self.defaults = {
-        global = {
-            enable_rare_filter = true,
-            window_scale = 1.0,
-            favorite_rares = {},
-            previous_records = {},
-            ignore_rares = {},
-        }
-    }
+    self.defaults = RT.GetDefaultModuleDatabaseValues()
     
     -- Load the database.
     self.db = LibStub("AceDB-3.0"):New("RareTrackerUldumDB", self.defaults)
@@ -161,8 +153,8 @@ function RTU:CreateRareSelectionEntry(npc_id, parent_frame, entry_data)
 	f.up:SetScript("OnClick",
 		function()
       -- Here, we use the most up-to-date entry data, instead of the one passed as an argument.
-      local previous_entry = RTUDB.rare_ordering.__raw_data_table[npc_id].__previous
-			RTUDB.rare_ordering:SwapNeighbors(previous_entry, npc_id)
+      local previous_entry = self.db.global.rare_ordering.__raw_data_table[npc_id].__previous
+			self.db.global.rare_ordering:SwapNeighbors(previous_entry, npc_id)
 			self.ReorderRareSelectionEntryItems(parent_frame)
 			self:ReorganizeRareTableFrame(self.entities_frame)
 		end
@@ -185,8 +177,8 @@ function RTU:CreateRareSelectionEntry(npc_id, parent_frame, entry_data)
 	f.down:SetScript("OnClick",
 		function()
       -- Here, we use the most up-to-date entry data, instead of the one passed as an argument.
-      local next_entry = RTUDB.rare_ordering.__raw_data_table[npc_id].__next
-			RTUDB.rare_ordering:SwapNeighbors(npc_id, next_entry)
+      local next_entry = self.db.global.rare_ordering.__raw_data_table[npc_id].__next
+			self.db.global.rare_ordering:SwapNeighbors(npc_id, next_entry)
 			self.ReorderRareSelectionEntryItems(parent_frame)
 			self:ReorganizeRareTableFrame(self.entities_frame)
 		end
@@ -206,7 +198,7 @@ end
 
 function RTU.ReorderRareSelectionEntryItems(parent_frame)
 	local i = 1
-	RTUDB.rare_ordering:ForEach(
+	self.db.global.rare_ordering:ForEach(
 		function(npc_id, entry_data)
 			local f = parent_frame.list_item[npc_id]
 			if entry_data.__previous == nil then
@@ -279,10 +271,10 @@ function RTU:ResetRareOrderButton(parent_frame)
 	parent_frame.reset_order_button:SetPoint("TOPRIGHT", parent_frame, 0, -50)
 	parent_frame.reset_order_button:SetScript("OnClick",
 		function()
-			RTUDB.rare_ordering:Clear()
+			self.db.global.rare_ordering:Clear()
       for i=1, #self.rare_ids do
         local npc_id = self.rare_ids[i]
-        RTUDB.rare_ordering:AddBack(npc_id)
+        self.db.global.rare_ordering:AddBack(npc_id)
       end
       self:ReorganizeRareTableFrame(self.entities_frame)
       self.ReorderRareSelectionEntryItems(parent_frame)
@@ -309,7 +301,7 @@ function RTU:InitializeRareSelectionChildMenu(parent_frame)
 	local i = 1
 	f.list_item = {}
 	
-	RTUDB.rare_ordering:ForEach(
+	self.db.global.rare_ordering:ForEach(
 		function(npc_id, entry_data)
 			f.list_item[npc_id] = self:CreateRareSelectionEntry(npc_id, f, entry_data)
 			f.list_item[npc_id]:SetPoint("TOPLEFT", f, 1, -(i - 1) * 12 - 5)

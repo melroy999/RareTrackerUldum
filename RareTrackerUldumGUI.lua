@@ -241,7 +241,7 @@ function RTU:ReorganizeRareTableFrame(f)
 	
 	-- Give all of the table entries their new positions.
 	local i = 1
-	RTUDB.rare_ordering:ForEach(
+	self.db.global.rare_ordering:ForEach(
 		function(npc_id, _)
 			if self.db.global.ignore_rares[npc_id] or assault_rares[npc_id] == nil then
 				f.entities[npc_id]:Hide()

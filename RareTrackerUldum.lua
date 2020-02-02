@@ -21,26 +21,11 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 -- ##                              Core                              ##
 -- ####################################################################
 
+-- Create a primary frame for the addon.
 local RTU = CreateFrame("Frame", "RTU", UIParent);
-RT:RegisterZoneModule(RTU)
 
--- The current data we have of the rares.
-RTU.is_alive = {}
-RTU.current_health = {}
-RTU.last_recorded_death = {}
-RTU.current_coordinates = {}
-
--- The zone_uid can be used to distinguish different shards of the zone.
-RTU.current_shard_id = nil
-
--- A table containing all UID deaths reported by the player.
-RTU.recorded_entity_death_ids = {}
-
--- A table containing all vignette UIDs reported by the player.
-RTU.reported_vignettes = {}
-
--- A table containing all spawn UIDs that have been reported through a sound warning.
-RTU.reported_spawn_uids = {}
+-- The code of the addon.
+RTU.addon_code = "RTU"
 
 -- The version of the addon.
 RTU.version = 9001
@@ -51,15 +36,11 @@ RTU.version = 9001
 -- Version 7: Added Champion Sen-mat.
 -- Version 8: Added more rares.
 
--- Check whether the addon has loaded.
-RTU.is_loaded = false
-
 -- Check which assault is currently active.
 RTU.assault_id = 0
 
--- The code of the addon.
-RTU.addon_code = "RTU"
-
+-- Register the module in the core library.
+RT:RegisterZoneModule(RTU)
 
 -- ####################################################################
 -- ##                         Saved Variables                        ##
