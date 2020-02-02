@@ -1,5 +1,7 @@
 -- Redefine often used functions locally.
 local GetLocale = GetLocale
+local ipairs = ipairs
+local pairs = pairs
 
 -- ####################################################################
 -- ##                          Static Data                           ##

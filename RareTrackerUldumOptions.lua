@@ -1,16 +1,9 @@
 -- Redefine often used functions locally.
 local CreateFrame = CreateFrame
-local UIDropDownMenu_SetWidth = UIDropDownMenu_SetWidth
-local UIDropDownMenu_SetText = UIDropDownMenu_SetText
-local PlaySoundFile = PlaySoundFile
-local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
-local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
-local getglobal = getglobal
 local InterfaceOptions_AddCategory = InterfaceOptions_AddCategory
 
 -- Redefine global variables locally.
 local UIParent = UIParent
-local C_Map = C_Map
 
 -- ####################################################################
 -- ##                      Localization Support                      ##
@@ -34,12 +27,12 @@ function RTU:AddModuleOptions(options)
     options[RTU.addon_code] = {
         type = "group",
         name = "Uldum",
-        order = RT.GetOrder(),
+        order = RT:GetOrder(),
         args = {
             [RTU.addon_code] = {
                 type = "group",
                 name = "Uldum Options",
-                order = RT.GetOrder(),
+                order = RT:GetOrder(),
                 inline = true,
                 args = {
                     filter_list = {
@@ -47,11 +40,11 @@ function RTU:AddModuleOptions(options)
                         name = "Enable filter fallback",
                         desc = "Show only rares that drop special loot (mounts/pets/toys) when no assault data is available.",
                         width = "full",
-                        order = RT.GetOrder(),
-                        get = function() 
-                            return self.db.global.enable_rare_filter 
+                        order = RT:GetOrder(),
+                        get = function()
+                            return self.db.global.enable_rare_filter
                         end,
-                        set = function(info, val)
+                        set = function(_, val)
                             self.db.global.enable_rare_filter  = val
                         end
                     },
@@ -61,11 +54,11 @@ function RTU:AddModuleOptions(options)
                         min = 0.5,
                         max = 2,
                         step = 0.05,
-                        order = RT.GetOrder(),
-                        get = function() 
-                            return self.db.global.window_scale 
+                        order = RT:GetOrder(),
+                        get = function()
+                            return self.db.global.window_scale
                         end,
-                        set = function(info, val)
+                        set = function(_, val)
                             self.db.global.window_scale  = val
                             self:SetScale(val)
                         end
@@ -73,7 +66,7 @@ function RTU:AddModuleOptions(options)
                     reset_favorites = {
                         type = "execute",
                         name = "Reset Favorite",
-                        order = RT.GetOrder(),
+                        order = RT:GetOrder(),
                         func = function()
                             self.db.global.favorite_rares = {}
                             self:CorrectFavoriteMarks()

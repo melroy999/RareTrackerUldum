@@ -1,20 +1,7 @@
 -- Redefine often used functions locally.
-local UnitGUID = UnitGUID
-local strsplit = strsplit
-local UnitHealth = UnitHealth
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local C_VignetteInfo = C_VignetteInfo
-local GetServerTime = GetServerTime
-local LinkedSet = LinkedSet
-local CreateFrame = CreateFrame
-local GetChannelList = GetChannelList
+local print = print
 
 -- Redefine often used variables locally.
-local C_Map = C_Map
-local COMBATLOG_OBJECT_TYPE_GUARDIAN = COMBATLOG_OBJECT_TYPE_GUARDIAN
-local COMBATLOG_OBJECT_TYPE_PET = COMBATLOG_OBJECT_TYPE_PET
-local COMBATLOG_OBJECT_TYPE_OBJECT = COMBATLOG_OBJECT_TYPE_OBJECT
-local UIParent = UIParent
 local C_MapExplorationInfo = C_MapExplorationInfo
 
 -- ####################################################################

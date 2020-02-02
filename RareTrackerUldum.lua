@@ -1,10 +1,7 @@
 -- Redefine often used functions locally.
 local CreateFrame = CreateFrame
-local InterfaceOptionsFrame_Show = InterfaceOptionsFrame_Show
-local InterfaceOptionsFrame_OpenToCategory = InterfaceOptionsFrame_OpenToCategory
 local LibStub = LibStub
-local UnitHealth = UnitHealth
-local UnitHealthMax = UnitHealthMax
+local print = print
 
 -- Redefine global variables locally.
 local UIParent = UIParent
@@ -28,7 +25,7 @@ local RTU = CreateFrame("Frame", "RTU", UIParent);
 RTU.addon_code = "RTU"
 
 -- The version of the addon.
-RTU.version = 9001
+RTU.version = 8
 -- Version 2: changed the order of the rares.
 -- Version 3: death messages now send the spawn id.
 -- Version 4: changed the interface of the alive message to include coordinates.
@@ -48,51 +45,3 @@ RT:RegisterZoneModule(RTU)
 
 -- Setting saved in the saved variables.
 RTUDB = {}
-
--- ####################################################################
--- ##                        Helper functions                        ##
--- ####################################################################
-
--- Open and start the RTU interface and subscribe to all the required events.
-function RTU:StartInterface()
-	-- Reset the data, since we cannot guarantee its correctness.
-	self.is_alive = {}
-	self.current_health = {}
-	self.last_recorded_death = {}
-	self.current_coordinates = {}
-	self.reported_spawn_uids = {}
-	self.reported_vignettes = {}
-	self.waypoints = {}
-	self.current_shard_id = nil
-	self:UpdateShardNumber(nil)
-	self:UpdateAllDailyKillMarks()
-	self:RegisterEvents()
-	
-	if C_ChatInfo.RegisterAddonMessagePrefix("RTU") ~= true then
-		print(L["<RTU> Failed to register AddonPrefix 'RTU'. RTU will not function properly."])
-	end
-	
-	if not RT.db.global.window.hide then
-		self:Show()
-	end
-end
-
--- Open and start the RTU interface and unsubscribe to all the required events.
-function RTU:CloseInterface()
-	-- Reset the data.
-	self.is_alive = {}
-	self.current_health = {}
-	self.last_recorded_death = {}
-	self.current_coordinates = {}
-	self.reported_spawn_uids = {}
-	self.reported_vignettes = {}
-	self.current_shard_id = nil
-	self:UpdateShardNumber(nil)
-	
-	-- Register the user's departure and disable event listeners.
-	self:RegisterDeparture(self.current_shard_id)
-	self:UnregisterEvents()
-	
-	-- Hide the interface.
-	self:Hide()
-end
