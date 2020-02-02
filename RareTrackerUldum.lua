@@ -43,7 +43,7 @@ RTU.reported_vignettes = {}
 RTU.reported_spawn_uids = {}
 
 -- The version of the addon.
-RTU.version = 8
+RTU.version = 9001
 -- Version 2: changed the order of the rares.
 -- Version 3: death messages now send the spawn id.
 -- Version 4: changed the interface of the alive message to include coordinates.

@@ -23,5 +23,4 @@ LinkedList.lua
 RareTrackerUldumGlobals.lua
 RareTrackerUldumGUI.lua
 RareTrackerUldumOptions.lua
-RareTrackerUldumCommunication.lua
 RareTrackerUldumEventHandler.lua

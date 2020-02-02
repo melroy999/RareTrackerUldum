@@ -113,7 +113,7 @@ function RTU:CreateRareTableEntry(npc_id, parent_frame)
 					target = "SAY"
 				end
                 
-                local channel_id = self.GetGeneralChatId()
+                local channel_id = RT.GetGeneralChatId()
 			
 				if self.current_health[npc_id] then
 					-- SendChatMessage
