@@ -30,6 +30,13 @@ function RTU:AddModuleOptions(options)
         order = RT:GetOrder(),
         childGroups = "tab",
         args = {
+            description = {
+                type = "description",
+                name = "RareTrackerUldum (v"..GetAddOnMetadata("RareTrackerUldum", "Version")..")",
+                order = RT:GetOrder(),
+                fontSize = "large",
+                width = "full",
+            },
             general = {
                 type = "group",
                 name = "General Options",
@@ -62,6 +69,7 @@ function RTU:AddModuleOptions(options)
                         end,
                         set = function(_, val)
                             self.db.global.enable_rare_filter  = val
+                            self:ReorganizeRareTableFrame(self.entities_frame)
                         end
                     },
                     reset_favorites = {
