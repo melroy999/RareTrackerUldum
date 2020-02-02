@@ -29,6 +29,8 @@ function RTU:InitializeRareTrackerDatabase()
             enable_rare_filter = true,
             window_scale = 1.0,
             favorite_rares = {},
+            previous_records = {},
+            ignore_rares = {},
         }
     }
     
@@ -118,7 +120,7 @@ function RTU:CreateRareSelectionEntry(npc_id, parent_frame, entry_data)
 	f.enable:SetSize(10, 10)
 	local texture = f.enable:CreateTexture(nil, "BACKGROUND")
 	
-	if not RTUDB.ignore_rare[npc_id] then
+	if not self.db.global.ignore_rares[npc_id] then
 		texture:SetColorTexture(0, 1, 0, 1)
 	else
 		texture:SetColorTexture(1, 0, 0, 1)
@@ -129,16 +131,16 @@ function RTU:CreateRareSelectionEntry(npc_id, parent_frame, entry_data)
 	f.enable:SetPoint("TOPLEFT", f, 0, 0)
 	f.enable:SetScript("OnClick",
 		function()
-			if not RTUDB.ignore_rare[npc_id] then
-				if RTUDB.favorite_rares[npc_id] then
+			if not self.db.global.ignore_rares[npc_id] then
+				if self.db.global.favorite_rares[npc_id] then
 					print(L["<RTU> Favorites cannot be hidden."])
 				else
-					RTUDB.ignore_rare[npc_id] = true
+					self.db.global.ignore_rares[npc_id] = true
 					f.enable.texture:SetColorTexture(1, 0, 0, 1)
 					RTU:ReorganizeRareTableFrame(RTU.entities_frame)
 				end
 			else
-				RTUDB.ignore_rare[npc_id] = nil
+				self.db.global.ignore_rares[npc_id] = nil
 				f.enable.texture:SetColorTexture(0, 1, 0, 1)
 				RTU:ReorganizeRareTableFrame(RTU.entities_frame)
 			end
@@ -237,8 +239,8 @@ function RTU:DisableAllRaresButton(parent_frame)
 		function()
 			for i=1, #self.rare_ids do
         local npc_id = self.rare_ids[i]
-        if RTUDB.favorite_rares[npc_id] ~= true then
-          RTUDB.ignore_rare[npc_id] = true
+        if self.db.global.favorite_rares[npc_id] ~= true then
+          self.db.global.ignore_rares[npc_id] = true
           parent_frame.list_item[npc_id].enable.texture:SetColorTexture(1, 0, 0, 1)
         end
       end
@@ -259,7 +261,7 @@ function RTU:EnableAllRaresButton(parent_frame)
 		function()
       for i=1, #self.rare_ids do
         local npc_id = self.rare_ids[i]
-        RTUDB.ignore_rare[npc_id] = nil
+        self.db.global.ignore_rares[npc_id] = nil
         parent_frame.list_item[npc_id].enable.texture:SetColorTexture(0, 1, 0, 1)
       end
       self:ReorganizeRareTableFrame(self.entities_frame)

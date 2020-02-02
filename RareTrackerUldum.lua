@@ -68,9 +68,6 @@ RTU.addon_code = "RTU"
 -- Setting saved in the saved variables.
 RTUDB = {}
 
--- Keep a cache of previous data, that we can restore if appropriate.
-RTUDB.previous_records = {}
-
 -- ####################################################################
 -- ##                        Helper functions                        ##
 -- ####################################################################

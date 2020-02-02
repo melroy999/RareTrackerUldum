@@ -222,7 +222,7 @@ function RTU:ReorganizeRareTableFrame(f)
 	-- How many ignored rares do we have?
 	local n = 0
     for _, npc_id in pairs(RTU.rare_ids) do
-        if RTUDB.ignore_rare[npc_id] or assault_rares[npc_id] == nil then
+        if self.db.global.ignore_rares[npc_id] or assault_rares[npc_id] == nil then
             n = n + 1
         end
     end
@@ -243,7 +243,7 @@ function RTU:ReorganizeRareTableFrame(f)
 	local i = 1
 	RTUDB.rare_ordering:ForEach(
 		function(npc_id, _)
-			if RTUDB.ignore_rare[npc_id] or assault_rares[npc_id] == nil then
+			if self.db.global.ignore_rares[npc_id] or assault_rares[npc_id] == nil then
 				f.entities[npc_id]:Hide()
 			else
 				f.entities[npc_id]:SetPoint("TOPLEFT", f, 0, -(i - 1) * 12 - 5)
@@ -512,7 +512,7 @@ function RTU:InitializeReloadButton(f)
 				self.last_reload_time = GetServerTime()
 				
 				-- Reset the cache.
-				RTUDB.previous_records[self.current_shard_id] = nil
+				self.db.global.previous_records[self.current_shard_id] = nil
 				
 				-- Re-register your arrival in the shard.
 				RTU:RegisterArrival(self.current_shard_id)

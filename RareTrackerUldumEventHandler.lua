@@ -349,14 +349,6 @@ function RTU:OnAddonLoaded()
         -- Initialize the database.
         self:InitializeRareTrackerDatabase()
 		
-		if not RTUDB.previous_records then
-			RTUDB.previous_records = {}
-		end
-		
-		if RTUDB.minimap_icon_enabled == nil then
-			RTUDB.minimap_icon_enabled = true
-		end
-		
 		if not RTUDB.banned_NPC_ids then
 			RTUDB.banned_NPC_ids = {}
 		else
@@ -365,14 +357,6 @@ function RTU:OnAddonLoaded()
 				local npc_id = self.rare_ids[i]
 				RTUDB.banned_NPC_ids[npc_id] = nil
 			end
-		end
-		
-		if RTUDB.enable_raid_communication == nil then
-			RTUDB.enable_raid_communication = true
-		end
-		
-		if not RTUDB.ignore_rare then
-			RTUDB.ignore_rare = {}
 		end
 		
 		if not RTUDB.rare_ordering or not RTUDB.version or RTUDB.version ~= self.version then
@@ -398,11 +382,11 @@ function RTU:OnAddonLoaded()
 		-- Initialize the configuration menu.
 		self:InitializeConfigMenu()
 		
-		-- Remove any data in the previous records that has expired.
-		for key, _ in pairs(RTUDB.previous_records) do
-			if GetServerTime() - RTUDB.previous_records[key].time_stamp > 900 then
+		-- Remove any data in the previous records that have expired.
+		for key, _ in pairs(self.db.global.previous_records) do
+			if GetServerTime() - self.db.global.previous_records[key].time_stamp > 900 then
 				print(L["<RTU> Removing cached data for shard "]..(key + 42)..".")
-				RTUDB.previous_records[key] = nil
+				self.db.global.previous_records[key] = nil
 			end
 		end
         
@@ -416,9 +400,9 @@ end
 function RTU:OnPlayerLogout()
 	if self.current_shard_id then
 		-- Save the records, such that we can use them after a reload.
-		RTUDB.previous_records[self.current_shard_id] = {}
-		RTUDB.previous_records[self.current_shard_id].time_stamp = GetServerTime()
-		RTUDB.previous_records[self.current_shard_id].time_table = self.last_recorded_death
+		self.db.global.previous_records[self.current_shard_id] = {}
+		self.db.global.previous_records[self.current_shard_id].time_stamp = GetServerTime()
+		self.db.global.previous_records[self.current_shard_id].time_table = self.last_recorded_death
 	end
 end
 
