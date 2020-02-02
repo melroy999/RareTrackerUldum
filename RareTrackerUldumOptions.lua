@@ -24,17 +24,33 @@ function RTU:InitializeRareTrackerDatabase()
 end
 
 function RTU:AddModuleOptions(options)
-    options[RTU.addon_code] = {
+    options[self.addon_code] = {
         type = "group",
         name = "Uldum",
         order = RT:GetOrder(),
+        childGroups = "tab",
         args = {
-            [RTU.addon_code] = {
+            general = {
                 type = "group",
-                name = "Uldum Options",
+                name = "General Options",
                 order = RT:GetOrder(),
-                inline = true,
                 args = {
+                    window_scale = {
+                        type = "range",
+                        name = "Rare window scale",
+                        min = 0.5,
+                        max = 2,
+                        step = 0.05,
+                        isPercent = true,
+                        order = RT:GetOrder(),
+                        get = function()
+                            return self.db.global.window_scale
+                        end,
+                        set = function(_, val)
+                            self.db.global.window_scale  = val
+                            self:SetScale(val)
+                        end
+                    },
                     filter_list = {
                         type = "toggle",
                         name = "Enable filter fallback",
@@ -48,24 +64,10 @@ function RTU:AddModuleOptions(options)
                             self.db.global.enable_rare_filter  = val
                         end
                     },
-                    window_scale = {
-                        type = "range",
-                        name = "Rare window scale",
-                        min = 0.5,
-                        max = 2,
-                        step = 0.05,
-                        order = RT:GetOrder(),
-                        get = function()
-                            return self.db.global.window_scale
-                        end,
-                        set = function(_, val)
-                            self.db.global.window_scale  = val
-                            self:SetScale(val)
-                        end
-                    },
                     reset_favorites = {
                         type = "execute",
-                        name = "Reset Favorite",
+                        name = "Reset Favorites",
+                        desc = "Reset the list of favorite rares.",
                         order = RT:GetOrder(),
                         func = function()
                             self.db.global.favorite_rares = {}
@@ -73,9 +75,77 @@ function RTU:AddModuleOptions(options)
                         end
                     },
                 }
+            },
+            ordering = {
+                type = "group",
+                name = "Rare List Options",
+                order = RT:GetOrder(),
+                args = {
+                    enable_all = {
+                        type = "execute",
+                        name = "Enable All",
+                        desc = "Enable all rares in the list.",
+                        order = RT:GetOrder(),
+                        width = 0.7,
+                        func = function()
+                            for _, npc_id in pairs(self.rare_ids) do
+                                self.db.global.ignore_rares[npc_id] = nil
+                            end
+                            self:ReorganizeRareTableFrame(self.entities_frame)
+                        end
+                    },
+                    disable_all = {
+                        type = "execute",
+                        name = "Disable All",
+                        desc = "Disable all non-favorite rares in the list.",
+                        order = RT:GetOrder(),
+                        width = 0.7,
+                        func = function(info)
+                            for _, npc_id in pairs(self.rare_ids) do
+                                if self.db.global.favorite_rares[npc_id] ~= true then
+                                  self.db.global.ignore_rares[npc_id] = true
+                                end
+                            end
+                            self:ReorganizeRareTableFrame(self.entities_frame)
+                        end
+                    },
+                    ignore = {
+                        type = "group",
+                        name = "Active Rares",
+                        order = RT:GetOrder(),
+                        inline = true,
+                        args = {
+                            -- To be filled dynamically.
+                        }
+                    },
+                }
             }
         }
     }
+    
+    -- Add checkboxes for all of the rares.
+    for _, npc_id in pairs(self.rare_ids) do
+        options[self.addon_code].args.ordering.args.ignore.args[""..npc_id] = {
+            type = "toggle",
+            name = self.rare_display_names[npc_id],
+            width = "full",
+            order = RT:GetOrder(),
+            get = function()
+                return not self.db.global.ignore_rares[npc_id]
+            end,
+            set = function(_, val)
+                if not self.db.global.ignore_rares[npc_id] then
+                    self.db.global.ignore_rares[npc_id] = true
+                else
+                    self.db.global.ignore_rares[npc_id] = nil
+                end
+                self:ReorganizeRareTableFrame(self.entities_frame)
+            end,
+            disabled = function()
+                return self.db.global.favorite_rares[npc_id]
+            end
+        }
+    end
 end
 
 -- ####################################################################
