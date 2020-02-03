@@ -52,6 +52,16 @@ function RTU:AddModuleOptions(options)
                             self:SetScale(val)
                         end
                     },
+                    reset_favorites = {
+                        type = "execute",
+                        name = L["Reset Favorites"],
+                        desc = L["Reset the list of favorite rares."],
+                        order = RT:GetOrder(),
+                        func = function()
+                            self.db.global.favorite_rares = {}
+                            self:CorrectFavoriteMarks()
+                        end
+                    },
                     filter_list = {
                         type = "toggle",
                         name = L["Enable filter fallback"],
@@ -65,16 +75,6 @@ function RTU:AddModuleOptions(options)
                         set = function(_, val)
                             self.db.global.enable_rare_filter  = val
                             self:ReorganizeRareTableFrame(self.entities_frame)
-                        end
-                    },
-                    reset_favorites = {
-                        type = "execute",
-                        name = L["Reset Favorites"],
-                        desc = L["Reset the list of favorite rares."],
-                        order = RT:GetOrder(),
-                        func = function()
-                            self.db.global.favorite_rares = {}
-                            self:CorrectFavoriteMarks()
                         end
                     },
                 }

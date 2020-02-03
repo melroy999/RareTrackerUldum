@@ -37,7 +37,7 @@ function RTU:CheckForShardChange(zone_uid)
 		has_changed = true
 		
 		if self.current_shard_id == nil then
-			-- Register yourRTU for the given shard.
+			-- Register your arrival on the given shard.
 			self:RegisterArrival(zone_uid)
 		else
 			-- Move from one shard to another.

@@ -28,10 +28,3 @@ RTU.assault_id = 0
 
 -- Register the module in the core library.
 RT:RegisterZoneModule(RTU)
-
--- ####################################################################
--- ##                         Saved Variables                        ##
--- ####################################################################
-
--- Setting saved in the saved variables.
-RTUDB = {}
