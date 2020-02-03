@@ -15,6 +15,18 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 -- ##                         Event Handlers                         ##
 -- ####################################################################
 
+-- Check if the assault id has changed.
+function RTU:CheckForAssaultIdChange()
+    local map_texture = C_MapExplorationInfo.GetExploredMapTextures(self.parent_zone)
+    if map_texture then
+        local new_assault_id = map_texture[1].fileDataIDs[1]
+        if self.assault_id ~= new_assault_id then
+            self.assault_id = new_assault_id
+            self:ReorganizeRareTableFrame(self.entities_frame)
+        end
+    end
+end
+
 -- Check whether the user has changed shards and proceed accordingly.
 function RTU:CheckForShardChange(zone_uid)
 	local has_changed = false
@@ -35,14 +47,7 @@ function RTU:CheckForShardChange(zone_uid)
 	end
         
     -- Take the opportunity to check for assault updates as well.
-    local map_texture = C_MapExplorationInfo.GetExploredMapTextures(self.parent_zone)
-    if map_texture then
-        local new_assault_id = map_texture[1].fileDataIDs[1]
-        if self.assault_id ~= new_assault_id then
-            self.assault_id = new_assault_id
-            self:ReorganizeRareTableFrame(self.entities_frame)
-        end
-    end
+    self:CheckForAssaultIdChange()
 	
 	return has_changed
 end
