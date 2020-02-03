@@ -1,27 +1,9 @@
--- Redefine often used functions locally.
-local CreateFrame = CreateFrame
-local IsLeftControlKeyDown = IsLeftControlKeyDown
-local IsRightControlKeyDown = IsRightControlKeyDown
-local UnitInRaid = UnitInRaid
-local IsLeftAltKeyDown = IsLeftAltKeyDown
-local IsRightAltKeyDown = IsRightAltKeyDown
-local SendChatMessage = SendChatMessage
-local GetServerTime = GetServerTime
-local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
-
--- Redefine global variables locally.
-local UIParent = UIParent
-
 -- Width and height variables used to customize the window.
 local entity_name_width = 208
 local entity_status_width = 50
 local frame_padding = 4
 local favorite_rares_width = 10
 local shard_id_frame_height = 16
-
--- Values for the opacity of the background and foreground.
-local background_opacity = 0.4
-local front_opacity = 0.6
 
 -- ####################################################################
 -- ##                      Localization Support                      ##

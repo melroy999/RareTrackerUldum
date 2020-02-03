@@ -1,5 +1,5 @@
 -- The default locale, which is in the English language.
-local L = LibStub("AceLocale-3.0"):NewLocale("RareTrackerUldum", "enUS", true)
+local L = LibStub("AceLocale-3.0"):NewLocale("RareTrackerUldum", "enUS", true, true)
 if not L then return end
 
 L["seen at"] = "seen at"

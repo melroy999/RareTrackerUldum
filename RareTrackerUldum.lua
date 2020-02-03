@@ -1,18 +1,8 @@
 -- Redefine often used functions locally.
 local CreateFrame = CreateFrame
-local LibStub = LibStub
-local print = print
 
 -- Redefine global variables locally.
 local UIParent = UIParent
-local C_ChatInfo = C_ChatInfo
-
--- ####################################################################
--- ##                      Localization Support                      ##
--- ####################################################################
-
--- Get an object we can use for the localization of the addon.
-local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 
 -- ####################################################################
 -- ##                              Core                              ##

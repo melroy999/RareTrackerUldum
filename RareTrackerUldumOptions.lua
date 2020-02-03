@@ -1,10 +1,3 @@
--- Redefine often used functions locally.
-local CreateFrame = CreateFrame
-local InterfaceOptions_AddCategory = InterfaceOptions_AddCategory
-
--- Redefine global variables locally.
-local UIParent = UIParent
-
 -- ####################################################################
 -- ##                      Localization Support                      ##
 -- ####################################################################
@@ -39,12 +32,13 @@ function RTU:AddModuleOptions(options)
             },
             general = {
                 type = "group",
-                name = "General Options",
+                name = L["General Options"],
                 order = RT:GetOrder(),
                 args = {
                     window_scale = {
                         type = "range",
-                        name = "Rare window scale",
+                        name = L["Rare window scale"],
+                        desc = L["Set the scale of the rare window."],
                         min = 0.5,
                         max = 2,
                         step = 0.05,
@@ -60,8 +54,9 @@ function RTU:AddModuleOptions(options)
                     },
                     filter_list = {
                         type = "toggle",
-                        name = "Enable filter fallback",
-                        desc = "Show only rares that drop special loot (mounts/pets/toys) when no assault data is available.",
+                        name = L["Enable filter fallback"],
+                        desc = L["Show only rares that drop special loot (mounts/pets/toys)"..
+                            " when no assault data is available."],
                         width = "full",
                         order = RT:GetOrder(),
                         get = function()
@@ -74,8 +69,8 @@ function RTU:AddModuleOptions(options)
                     },
                     reset_favorites = {
                         type = "execute",
-                        name = "Reset Favorites",
-                        desc = "Reset the list of favorite rares.",
+                        name = L["Reset Favorites"],
+                        desc = L["Reset the list of favorite rares."],
                         order = RT:GetOrder(),
                         func = function()
                             self.db.global.favorite_rares = {}
@@ -86,13 +81,13 @@ function RTU:AddModuleOptions(options)
             },
             ordering = {
                 type = "group",
-                name = "Rare List Options",
+                name = L["Rare List Options"],
                 order = RT:GetOrder(),
                 args = {
                     enable_all = {
                         type = "execute",
-                        name = "Enable All",
-                        desc = "Enable all rares in the list.",
+                        name = L["Enable All"],
+                        desc = L["Enable all rares in the list."],
                         order = RT:GetOrder(),
                         width = 0.7,
                         func = function()
@@ -104,11 +99,11 @@ function RTU:AddModuleOptions(options)
                     },
                     disable_all = {
                         type = "execute",
-                        name = "Disable All",
-                        desc = "Disable all non-favorite rares in the list.",
+                        name = L["Disable All"],
+                        desc = L["Disable all non-favorite rares in the list."],
                         order = RT:GetOrder(),
                         width = 0.7,
-                        func = function(info)
+                        func = function(_)
                             for _, npc_id in pairs(self.rare_ids) do
                                 if self.db.global.favorite_rares[npc_id] ~= true then
                                   self.db.global.ignore_rares[npc_id] = true
@@ -119,7 +114,7 @@ function RTU:AddModuleOptions(options)
                     },
                     ignore = {
                         type = "group",
-                        name = "Active Rares",
+                        name = L["Active Rares"],
                         order = RT:GetOrder(),
                         inline = true,
                         args = {
@@ -142,10 +137,10 @@ function RTU:AddModuleOptions(options)
                 return not self.db.global.ignore_rares[npc_id]
             end,
             set = function(_, val)
-                if not self.db.global.ignore_rares[npc_id] then
-                    self.db.global.ignore_rares[npc_id] = true
-                else
+                if val then
                     self.db.global.ignore_rares[npc_id] = nil
+                else
+                    self.db.global.ignore_rares[npc_id] = true
                 end
                 self:ReorganizeRareTableFrame(self.entities_frame)
             end,
