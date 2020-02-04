@@ -11,6 +11,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale("RareTrackerUldum", true)
 
 function RTU:InitializeRareTrackerDatabase()
     self.defaults = RT.GetDefaultModuleDatabaseValues()
+    self.defaults.global["enable_rare_filter"] = true 
     
     -- Load the database.
     self.db = LibStub("AceDB-3.0"):New("RareTrackerUldumDB", self.defaults, true)
@@ -44,6 +45,7 @@ function RTU:AddModuleOptions(options)
                         step = 0.05,
                         isPercent = true,
                         order = RT:GetOrder(),
+                        width = 1.2,
                         get = function()
                             return self.db.global.window_scale
                         end,
@@ -57,6 +59,7 @@ function RTU:AddModuleOptions(options)
                         name = L["Reset Favorites"],
                         desc = L["Reset the list of favorite rares."],
                         order = RT:GetOrder(),
+                        width = 1.2,
                         func = function()
                             self.db.global.favorite_rares = {}
                             self:CorrectFavoriteMarks()
