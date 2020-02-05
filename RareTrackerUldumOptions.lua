@@ -13,6 +13,29 @@ function RTU:InitializeRareTrackerDatabase()
     self.defaults = RT.GetDefaultModuleDatabaseValues()
     self.defaults.global["enable_rare_filter"] = true 
     
+    -- Copy over settings from the previous version, if possible.
+    if RTUDB then
+        -- Copy over the favorite rares, ignored rares and window scale.
+        if RTUDB.favorite_rares then
+            self.defaults.global.favorite_rares = RTUDB.favorite_rares
+        end
+        
+        if RTUDB.ignore_rare then
+            self.defaults.global.ignore_rares = RTUDB.ignore_rare
+        end
+        
+        if RTUDB.window_scale then
+            self.defaults.global.window_scale = RTUDB.window_scale
+        end
+        
+        if RTUDB.default_show_loot_rares_only ~= nil then
+            self.defaults.global.enable_rare_filter = RTUDB.default_show_loot_rares_only
+        end
+        
+        -- Remove the RTUDB table.
+        RTUDB = nil
+    end
+    
     -- Load the database.
     self.db = LibStub("AceDB-3.0"):New("RareTrackerUldumDB", self.defaults, true)
 end
