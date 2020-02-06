@@ -49,7 +49,7 @@ function RTU:AddModuleOptions(options)
         args = {
             description = {
                 type = "description",
-                name = "RareTrackerUldum (v"..GetAddOnMetadata("RareTrackerUldum", "Version")..")",
+                name = "RareTrackerUldum (RTU)",
                 order = RT:GetOrder(),
                 fontSize = "large",
                 width = "full",
