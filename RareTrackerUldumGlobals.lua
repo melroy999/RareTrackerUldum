@@ -933,15 +933,6 @@ RTU.completion_quest_inverse = {
     [58695] = {162141}, -- "Zuythiz"
 }
 
--- Certain npcs have yell emotes to announce their arrival.
-local yell_announcing_rares = {}
-
--- Concert the ids above to the names.
-RTU.yell_announcing_rares = {}
-for key, value in pairs(yell_announcing_rares) do
-    RTU.yell_announcing_rares[RTU.rare_names[key]] = value
-end
-
 -- A set of placeholder icons, which will be used if the rare location is not yet known.
 RTU.rare_coordinates = {
     [157170] = {["x"] = 64, ["y"] = 26}, -- "Acolyte Taspu"
