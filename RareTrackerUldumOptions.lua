@@ -38,6 +38,9 @@ function RTU:InitializeRareTrackerDatabase()
     
     -- Load the database.
     self.db = LibStub("AceDB-3.0"):New("RareTrackerUldumDB", self.defaults, true)
+    
+    -- Register the callback to the logout function.
+    self.db.RegisterCallback(self, "OnDatabaseShutdown", "OnDatabaseShutdown")
 end
 
 function RTU:AddModuleOptions(options)
