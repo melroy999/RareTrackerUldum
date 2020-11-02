@@ -2,7 +2,7 @@
 ## Title: RareTrackerUldum
 ## Notes: Track and coordinate rare spawn timers in Uldum.
 ## Author: Melroy
-## Version: 7.0.0
+## Version: 7.0.2
 ## SavedVariables: RareTrackerUldumDB
 ## Dependencies: RareTrackerCore
 
