@@ -51,7 +51,13 @@ RareTracker.RegisterRaresForModule({
                 target_npc_ids[npc_id] = true
             end
         else
-            if self.db.global.uldum and self.db.global.uldum.enable_rare_filter then
+            -- First of all, we want 'enable_rare_filter' to be true if undefined.
+            if not self.db.global.uldum then
+                self.db.global.uldum = {}
+                self.db.global.uldum.enable_rare_filter = true
+            end
+            
+            if self.db.global.uldum.enable_rare_filter then
                 for _, npc_id in pairs(rare_ids_with_loot) do
                     target_npc_ids[npc_id] = true
                 end
